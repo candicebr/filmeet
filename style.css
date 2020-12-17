@@ -1,0 +1,13 @@
+body {
+    background-color: rgb(85, 15, 15);
+    color: white;
+}
+
+.headMovie {
+    display :flex;
+    align-items: baseline;
+}
+
+.date {
+    margin-left: 10px;
+}
