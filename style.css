@@ -11,3 +11,16 @@ body {
 .date {
     margin-left: 10px;
 }
+
+.listActor {
+    display: flex;
+    overflow-x: scroll;
+}
+
+.listMovie {
+    display: flex;
+}
+
+button {
+    cursor: pointer;
+}

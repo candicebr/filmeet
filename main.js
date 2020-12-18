@@ -1,8 +1,38 @@
-GetMovie(); //récupère l'API
+//Info générale de la liste de film affichée sur la page principale
+const list = document.querySelector(".listMovie");
+const ShowMovie = (movie) => {
 
+    title = document.createElement("h4");
+    title.innerHTML = movie["title"];
+
+    date = document.createElement("h5");
+    date.innerHTML = movie["release_date"];
+
+    poster = document.createElement("img");
+    poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    poster.classList.add("movie");
+    poster.id = movie["id"];
+
+    //division avec les infos minimales du film
+    movieHTML = document.createElement("div");
+    movieHTML.appendChild(title);
+    movieHTML.appendChild(date);
+    movieHTML.appendChild(poster);
+    list.appendChild(movieHTML);
+
+    //Permet de cliquer sur chacun des films affichés
+    const btnMovies = document.querySelectorAll('.movie');
+    btnMovies.forEach(function(i){
+        i.addEventListener('click', GetInfoMovie);
+        i.style.cursor = "pointer";
+    });
+}
+
+let movies = GetMovie(); //variable qui contient le résultat de la recherche
+const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Récupération des données de l'API 
 async function GetMovie() {
-    const response = await fetch("https://api.themoviedb.org/3/movie/popular?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US&page=1");
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc");
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
     
@@ -13,48 +43,34 @@ async function GetMovie() {
         console.log('some error happened' , e);
     }
 
-    body["results"].forEach(movie => ShowMovie(movie)); //Appel de la fonction pour afficher
+    movies = body["results"];
+    SelectMovie();
 }
 
-//Info générale de la liste afficher sur la page principale
-const list = document.querySelector(".list");
-const ShowMovie = (movie) => {
+//Selection de 3 films aléatoire
+const SelectMovie = () => {
+    list.innerHTML = null; //Remise à zéro de la liste
+    /*const nbAleatoire = [];
+    while(nbAleatoire.length != 2)
+    {
+        nb = movies[Math.floor(Math.random() * 20)];
+        if (nbAleatoire.indexOf(nb) > -1)
+        {
+            nbAleatoire.push(nb);
+        }
+    }*/
 
-    title = document.createElement("h4");
-    title.innerHTML = movie["title"];
+    ShowMovie(movies[Math.floor(Math.random() * 20)]);
+    ShowMovie(movies[Math.floor(Math.random() * 20)]);
+    ShowMovie(movies[Math.floor(Math.random() * 20)]);
 
-    date = document.createElement("h5");
-    date.innerHTML = movie["release_date"];
-
-    backdrop = document.createElement("img");
-    backdrop.src = "https://image.tmdb.org/t/p/w300" + movie["backdrop_path"];
-
-    poster = document.createElement("img");
-    poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
-
-
-    //GetCast(movie["id"]);
-
-    movieHTML = document.createElement("div");
-    movieHTML.classList.add("movie");
-    movieHTML.id = movie["id"];
-    movieHTML.appendChild(title);
-    movieHTML.appendChild(date);
-    movieHTML.appendChild(poster);
-    movieHTML.appendChild(backdrop);
-    list.appendChild(movieHTML);
-
-    const btnMovies = document.querySelectorAll('.movie');
-
-    btnMovies.forEach(function(i){
-        i.addEventListener('click', GetInfoMovie);
-    });
+    //nbAleatoire.forEach(nb, ShowMovie(nb));
 }
+btnOtherMovie.addEventListener('click', SelectMovie); //genère d'autres films
 
-//Info précises après clic sur affiche
 
+//Récupère les informations précises après clic sur affiche
 async function GetInfoMovie (e) {
-
 
     const response = await fetch("https://api.themoviedb.org/3/movie/" + e.currentTarget.id + "?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
@@ -70,8 +86,29 @@ async function GetInfoMovie (e) {
     ShowInfoMovie(body);
 }
 
+/*
+//Récuperer les différents genres
+async function GetGenre() {
+    const response = await fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
+    // above line fetches the response from the given API endpoint.
+    const body = await response.json();
+    
+    try {
+        console.log('success!', body);
+    }
+    catch(e) {
+        console.log('some error happened' , e);
+    }
+
+    body["Genres"].forEach(genre => ShowGenre(genre)); //Appel de la fonction pour afficher
+}
+*/
+
 const infoHTML = document.querySelector(".info-movie");
-const infoInsideHTML = document.querySelector(".info-movie-inside");
+const backdropHTML = document.querySelector(".backdrop");
+const backdropInsideHTML = document.querySelector(".backdrop-inside");
+const listActor = document.querySelector(".listActor");
+//Affichage des informations précises sur le film passée en paramètre
 const ShowInfoMovie = (movie) => {
 
     //titre
@@ -115,37 +152,19 @@ const ShowInfoMovie = (movie) => {
 
     //background avec la banderole 
     const urlBackdrop = "https://image.tmdb.org/t/p/w1280" + movie["backdrop_path"];
-    infoHTML.style.backgroundImage = `url(${urlBackdrop})`;
-    infoInsideHTML.style.backgroundImage = "linear-gradient(to right, rgba(35%, 5%, 5%, 1), rgba(30%, 5%, 5%, 0.85))";
-    infoHTML.style.backgroundRepeat = "no-repeat";
-    infoHTML.style.backgroundSize = "cover";
-    infoHTML.style.backgroundPosition = "top";
+    backdropHTML.style.backgroundImage = `url(${urlBackdrop})`;
+    backdropInsideHTML.style.backgroundImage = "linear-gradient(to right, rgba(35%, 5%, 5%, 1), rgba(30%, 5%, 5%, 0.85))";
+    backdropHTML.style.backgroundRepeat = "no-repeat";
+    backdropHTML.style.backgroundSize = "cover";
+    backdropHTML.style.backgroundPosition = "top";
+
+    //liste d'acteur
+    listActor.innerHTML = null;//évite d'ajouter les acteurs à une liste d'acteur déjà présente
+    GetCast(movie["id"]);
 }
 
-
-/*
-const ShowCast = (cast) => {
-
-    if (cast["profile_path"] != null)
-    {
-        name = document.createElement("h4");
-        name.innerHTML = cast["name"];
-    
-        character = document.createElement("h5");
-        character.innerHTML = cast["character"];
-        profil = document.createElement("img");
-        profil.src = "https://image.tmdb.org/t/p/w185" + cast["profile_path"];
-
-        castHTML = document.createElement("div");
-        //castHTML.appendChild(name);
-        castHTML.appendChild(character);
-        castHTML.appendChild(profil);
-
-        list.appendChild(castHTML);
-    }
-}*/
-
-/*async function GetCast(id) {
+//Récupère la liste des acteurs du film passé en paramètre
+async function GetCast(id) {
     const response = await fetch("https://api.themoviedb.org/3/movie/"+ id +"/credits?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
@@ -158,4 +177,31 @@ const ShowCast = (cast) => {
     }
 
     body["cast"].forEach(cast => ShowCast(cast)); //Appel de la fonction pour afficher
-}*/
+    //body["crew"].forEach(crew => ShowCrew(crew)); //ewwayer de récuperer directeur
+}
+
+//Affiche les acteurs du film passé en paramètre
+const ShowCast = (cast) => {
+
+    if (cast["profile_path"] != null)
+    {
+        //nom de l'acteur
+        actor = document.createElement("h4");
+        actor.innerHTML = cast["name"];
+    
+        //personnage dasn le film
+        character = document.createElement("h5");
+        character.innerHTML = cast["character"];
+
+        //photo de l'acteur
+        profil = document.createElement("img");
+        profil.src = "https://image.tmdb.org/t/p/w185" + cast["profile_path"];
+
+        castHTML = document.createElement("div");
+        castHTML.appendChild(actor);
+        castHTML.appendChild(character);
+        castHTML.appendChild(profil);
+        listActor.appendChild(castHTML);
+    }
+}
+
