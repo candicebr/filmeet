@@ -74,42 +74,49 @@ const infoHTML = document.querySelector(".info-movie");
 const infoInsideHTML = document.querySelector(".info-movie-inside");
 const ShowInfoMovie = (movie) => {
 
-   
+    //titre
     title = document.querySelector(".title");
     title.innerHTML = movie["title"];
 
+    //date
     date = document.querySelector(".date");
     date.innerHTML = movie["release_date"];
 
+    //durée en minutes
     runtime = document.querySelector(".runtime");
     runtime.innerHTML = movie["runtime"] + ' min';
 
+    //poster
     poster = document.querySelector(".poster");
     poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
 
+    //phrase d'accroche
     description = document.querySelector(".tagline");
     description.innerHTML = movie["tagline"];
    
+    //liste de genres
     genre = document.querySelector(".genres");
-    genre.innerHTML = null;
-    ul = document.createElement("ul");
-
-    description = document.querySelector(".description");
-    description.innerHTML = movie["overwiew"];
-
+    genre.innerHTML = null; //évite d'ajouter les genres à une liste de genre déjà présente
+    ul = document.createElement("ul"); //contenant de la liste
     movie["genres"].forEach(function(i){
-        li = document.createElement("li");
+        li = document.createElement("li");//a chaque genre on ajoute un li
         li.innerHTML = i["name"];
         ul.appendChild(li);
     });
     genre.appendChild(ul);
 
+    //description
+    description = document.querySelector(".description");
+    description.innerHTML = movie["overwiew"];
+    
+    //vote moyenne en pourcentage
     vote_average = document.querySelector(".vote_average");
     vote_average.innerHTML = movie["vote_average"]*10 + '%';
 
+    //background avec la banderole 
     const urlBackdrop = "https://image.tmdb.org/t/p/w1280" + movie["backdrop_path"];
     infoHTML.style.backgroundImage = `url(${urlBackdrop})`;
-    infoInsideHTML.style.backgroundImage = "linear-gradient(to right, rgba(13.73%, 3.53%, 4.71%, 1), rgba(13.73%, 3.53%, 4.71%, 0.85))";
+    infoInsideHTML.style.backgroundImage = "linear-gradient(to right, rgba(35%, 5%, 5%, 1), rgba(30%, 5%, 5%, 0.85))";
     infoHTML.style.backgroundRepeat = "no-repeat";
     infoHTML.style.backgroundSize = "cover";
     infoHTML.style.backgroundPosition = "top";
