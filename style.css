@@ -1,6 +1,7 @@
 body {
     background: linear-gradient(to top, #560019, #000000 );
     color: white;
+    font-family: 'Roboto', sans-serif;
 }
 
 .home-page {
@@ -47,4 +48,30 @@ button {
 .listActor {
     display: flex;
     overflow-x: scroll;
+}
+
+.listMovie {
+    display: flex;
+}
+
+button {
+    cursor: pointer;
+}
+
+/*#cadres-neon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 550px;
+}*/
+
+.cadre {
+	position: absolute;
+  	width: 480px;
+  	box-shadow: 
+  	height: 300px;
+		inset 0 0 3px 1px #fff, 
+		inset 0 0 7px 5px #ff0000,
+		0 0 7px 5px #ff0000;
+		0 0 3px 1px #fff, 
 }
