@@ -64,7 +64,15 @@ async function GetMovie() {
     const genre_id = document.querySelector('#management-genres').value;
     const runtime = document.querySelector('#management-time').value;
     const keywords = document.querySelector('#management-keywords').value;
+    const director_id = document.querySelector('#management-director').value;
 
+    //test si le formulaire est vide
+    if (runtime == "null" && genre_id == "null" || director_id != "null")
+        page = 1;//les plus populaires en ce moment
+    else
+        page = Math.floor(Math.random() * 20 + 1);//numero de page aléatoire
+
+    //Gestion de la durée du film
     if (runtime == "null")
         runtime_url = "";
     else if (runtime == 181)
@@ -72,17 +80,20 @@ async function GetMovie() {
     else
         runtime_url = "&with_runtime.lte=" + runtime;
 
+    //Gestion si le genre est saisi ou non
     if (genre_id == "null")
         genre_url = ""
     else
         genre_url = "&with_genres=" + genre_id;
 
-    if (runtime == "null" && genre_id == "null")
-        page = 1;//les plus populaires en ce moment
+    //Gestion si le genre est saisi ou non
+    if (director_id == "null")
+        director_url = ""
     else
-        page = Math.floor(Math.random() * 50);//numero de page aléatoire
+        director_url = "&with_crew=" + director_id;
 
-    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+"&with_keywords="+keywords);
+ 
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+director_url+"&with_keywords="+keywords);
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
     
@@ -170,13 +181,11 @@ const ShowInfoMovie = (movie) => {
     //liste de genres
     genre = document.querySelector(".genres");
     genre.innerHTML = null; //évite d'ajouter les genres à une liste de genre déjà présente
-    ul = document.createElement("ul"); //contenant de la liste
     movie["genres"].forEach(function(i){
-        li = document.createElement("li");//a chaque genre on ajoute un li
-        li.innerHTML = i["name"];
-        ul.appendChild(li);
+        li_genre = document.createElement("li");//a chaque genre on ajoute un li
+        li_genre.innerHTML = i["name"];
+        genre.appendChild(li_genre);
     });
-    genre.appendChild(ul);
 
     //description
     description = document.querySelector(".description");
@@ -186,6 +195,21 @@ const ShowInfoMovie = (movie) => {
     vote_average = document.querySelector(".vote_average");
     vote_average.innerHTML = movie["vote_average"]*10 + '%';
 
+    //Companies de Production
+    companie = document.querySelector(".companies");
+    companie.innerHTML = null; //évite d'ajouter les companies à une liste de companie déjà présente
+    movie["production_companies"].forEach(function(i){
+        li_companie = document.createElement("li");//a chaque companie on ajoute un li
+        li_companie.innerHTML = i["name"];
+        if (i["logo_path"] != null)
+        {
+            img_companie = document.createElement("img");
+            img_companie.src = "https://image.tmdb.org/t/p/w92" + i["logo_path"];
+            li_companie.appendChild(img_companie);
+        }
+        companie.appendChild(li_companie);
+    });
+
     //background avec la banderole 
     const urlBackdrop = "https://image.tmdb.org/t/p/w1280" + movie["backdrop_path"];
     backdropHTML.style.backgroundImage = `url(${urlBackdrop})`;
@@ -194,13 +218,19 @@ const ShowInfoMovie = (movie) => {
     backdropHTML.style.backgroundSize = "cover";
     backdropHTML.style.backgroundPosition = "top";
 
-    //liste d'acteur
-    listActor.innerHTML = null;//évite d'ajouter les acteurs à une liste d'acteur déjà présente
+    //évite d'ajouter les acteurs et réalisateurs à une liste déjà présente
+    listActor.innerHTML = null;
+    directors.innerHTML = null;
+    writers.innerHTML = null;
+
+    //liste d'acteur avec réalisateurs
     GetCast(movie["id"]);
+
+    //liste de mots clés
     GetKeywords(movie["id"]);
 }
 
-//Récupère la liste des acteurs du film passé en paramètre
+//Récupère la liste des acteurs du film passé en paramètre (+le directeur)
 async function GetCast(id) {
     const response = await fetch("https://api.themoviedb.org/3/movie/"+ id +"/credits?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
@@ -214,7 +244,7 @@ async function GetCast(id) {
     }
 
     body["cast"].forEach(cast => ShowCast(cast)); //Appel de la fonction pour afficher
-    //body["crew"].forEach(crew => ShowCrew(crew)); //essayer de récuperer directeur
+    body["crew"].forEach(crew => FindDirectors(crew)); //Retrouver les réalisateurs
 }
 
 //Affiche les acteurs du film passé en paramètre
@@ -239,6 +269,24 @@ const ShowCast = (cast) => {
         castHTML.appendChild(character);
         castHTML.appendChild(profil);
         listActor.appendChild(castHTML);
+    }
+}
+
+const directors = document.querySelector(".director");
+const writers = document.querySelector(".writer");
+//Récupère les réalisateurs et ecrivains
+const FindDirectors = (crew) => {
+    if (crew["job"] == "Director")
+    {
+        directing = document.createElement("li");
+        directing.innerHTML = crew["job"] + ": " + crew["name"];
+        directors.appendChild(directing);
+    }
+    if (crew["department"] == "Writing")
+    {
+        writing = document.createElement("li");
+        writing.innerHTML = crew["job"] + ": " + crew["name"];
+        writers.appendChild(writing);
     }
 }
 

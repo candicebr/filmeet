@@ -21,24 +21,18 @@
 
       <section class="management">
         <div class="management-form">
-
+          
           <select id="management-genres">
-            <option value="null">Choose a genre</option>
-            <!--<option value=27>Horror</option>
-            <option value=18>Drama</option>
-            <option value=28>Action</option>
-            <option value=14>Fantasy</option>
-            <option value=878>Science fiction</option>
-            <option value=10749>Romance</option>-->
+            <option value="null">Select genres</option>
           </select>
 
-          <input id="management-réalisateur"
-            type="text"
-            placeholder="Réalisateur/Réalisatrices"/>
-
-          <input id="management-acteur"
-            type="text"
-            placeholder="Acteurs/Actrices"/>
+          <select id="management-director">
+            <option value="null">Choose a director</option>
+            <option value=525>Christopher Nolan</option>
+            <option value=510>Tim Burton</option>
+            <option value=488>Steven Spielberg</option>
+            <option value=59>Luc Besson</option>
+          </select>
 
           <select id="management-time">
             <option value="null">Choose a runtime</option>
@@ -73,10 +67,15 @@
           <p class="runtime">minutes</p>
           <img class="poster">
           <h3 class="tagline">tagline</h3>
-          <h4 class="genres">genres</h4>
+          <ul class="genres">genres</ul>
           <p class="description">description</p>
           <h3 class="vote_average">vote</h3>
+          <ul class="director">Director: </ul>
+          <ul class="writer">Writer: </ul>
+          <h4>Keywords: </h4>
           <ul class="keywords">keywords</ul>
+          <h4>Production companies: </h4>
+          <ul class="companies">Production companies</ul>
         </div>
       </div>
       <div class="listActor"></div>
