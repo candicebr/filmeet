@@ -23,13 +23,13 @@
         <div class="management-form">
 
           <select id="management-genres">
-            <option value=35>Comedy</option>
+            <!--<option value=35>Comedy</option>
             <option value=27>Horror</option>
             <option value=18>Drama</option>
             <option value=28>Action</option>
             <option value=14>Fantasy</option>
             <option value=878>Science fiction</option>
-            <option value=10749>Romance</option>
+            <option value=10749>Romance</option>-->
           </select>
 
           <input id="management-réalisateur"
@@ -41,7 +41,7 @@
             placeholder="Acteurs/Actrices"/>
 
           <select id="management-time">
-            <option value=null>Choose a runtime</option>
+            <option value="null">Choose a runtime</option>
             <option value=60>less than 1h</option>
             <option value=90>less than 1h30</option>
             <option value=120>less than 2h</option>
@@ -58,6 +58,9 @@
         <button class="management-ok">OK!</button>
       </section>
 
+      <div class="listMovie"></div>
+      <button class="btnOtherMovie">Other one</button>
+
     </section>
 
     <section class="info-movie">
@@ -73,14 +76,13 @@
           <h4 class="genres">genres</h4>
           <p class="description">description</p>
           <h3 class="vote_average">vote</h3>
+          <ul class="keywords">keywords</ul>
         </div>
       </div>
       <div class="listActor"></div>
       <button class="btnBack">Return</button>
     </section>
   
-    <div class="listMovie"></div>
-    <button class="btnOtherMovie">Other one</button>
   </body>
 
   <script src="main.js"></script>

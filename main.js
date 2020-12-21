@@ -1,3 +1,4 @@
+GetGenre();
 //Info générale de la liste de film affichée sur la page principale
 const list = document.querySelector(".listMovie");
 const ShowMovie = (movie) => {
@@ -38,7 +39,7 @@ async function GetMovie() {
     const runtime = document.querySelector('#management-time').value;
     const keywords = document.querySelector('#management-keywords').value;
 
-    if (runtime == null)
+    if (runtime == "null")
         runtime_url = "";
     else if (runtime == 181)
         runtime_url = "&with_runtime.gte=180";
@@ -106,7 +107,6 @@ async function GetInfoMovie (e) {
     ShowInfoMovie(body);
 }
 
-/*
 //Récuperer les différents genres
 async function GetGenre() {
     const response = await fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
@@ -120,9 +120,18 @@ async function GetGenre() {
         console.log('some error happened' , e);
     }
 
-    body["Genres"].forEach(genre => ShowGenre(genre)); //Appel de la fonction pour afficher
+    body["genres"].forEach(genre => AddGenreToManagement(genre)); //Appel de la fonction pour afficher
 }
-*/
+
+const management_genre = document.querySelector("#management-genres");
+//Ajout des différents genre dans le formulaire
+const AddGenreToManagement = (genre) => {
+    genreOption = document.createElement("option");
+    genreOption.innerHTML = genre['name'];
+    genreOption.value = genre['id'];
+    management_genre.appendChild(genreOption);
+}
+
 
 const infoHTML = document.querySelector(".info-movie");
 const backdropHTML = document.querySelector(".backdrop");
@@ -181,6 +190,7 @@ const ShowInfoMovie = (movie) => {
     //liste d'acteur
     listActor.innerHTML = null;//évite d'ajouter les acteurs à une liste d'acteur déjà présente
     GetCast(movie["id"]);
+    GetKeywords(movie["id"]);
 }
 
 //Récupère la liste des acteurs du film passé en paramètre
@@ -197,7 +207,7 @@ async function GetCast(id) {
     }
 
     body["cast"].forEach(cast => ShowCast(cast)); //Appel de la fonction pour afficher
-    //body["crew"].forEach(crew => ShowCrew(crew)); //ewwayer de récuperer directeur
+    //body["crew"].forEach(crew => ShowCrew(crew)); //essayer de récuperer directeur
 }
 
 //Affiche les acteurs du film passé en paramètre
@@ -225,7 +235,7 @@ const ShowCast = (cast) => {
     }
 }
 
-/*
+listKeyword = document.querySelector(".keywords");
 //Récupère la liste des keywords du film passé en paramètre
 async function GetKeywords(id) {
     const response = await fetch("https://api.themoviedb.org/3/movie/"+ id +"/keywords?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
@@ -239,6 +249,7 @@ async function GetKeywords(id) {
         console.log('some error happened' , e);
     }
 
+    listKeyword.innerHTML = null; //évite d'ajouter les keywords à une liste de keyword déjà présente
     body["keywords"].forEach(keyword => ShowKeywords(keyword)); //Appel de la fonction pour afficher
 }
 
@@ -246,14 +257,8 @@ async function GetKeywords(id) {
 const ShowKeywords = (keyword) => {
 
     //liste de genres
-    keywordHTML = document.querySelector(".keywords");
-    genre.innerHTML = null; //évite d'ajouter les keywords à une liste de kayword déjà présente
-    ul = document.createElement("ul"); //contenant de la liste
-    keyword.forEach(function(i){
-        li = document.createElement("li");//a chaque kayword on ajoute un li
-        li.innerHTML = i["name"];
-        ul.appendChild(li);
-    });
-    genre.appendChild(ul);
+    li = document.createElement("li");//a chaque keyword on ajoute un li
+    li.innerHTML = keyword["name"];
+    listKeyword.appendChild(li);
 }
-*/
+
