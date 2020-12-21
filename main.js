@@ -25,34 +25,22 @@ const AddGenreToManagement = (genre) => {
     management_genre.appendChild(genreOption);
 }
 
-//Info générale de la liste de film affichée sur la page principale
-const list = document.querySelector(".listMovie");
-const ShowMovie = (movie) => {
+let keywordsList = [];
+//Récupère les keywords similaires à la recherche
+async function GetKeywordsLike(string) {
+    const response = await fetch("https://api.themoviedb.org/3/search/keyword?api_key=9818ffc42e4d1dce5ea069594a161d22&query="+string+"&page=1");
+    // above line fetches the response from the given API endpoint.
+    const body = await response.json();
+    
+    try {
+        console.log('success!', body);
+    }
+    catch(e) {
+        console.log('some error happened' , e);
+    }
 
-    title = document.createElement("h4");
-    title.innerHTML = movie["title"];
-
-    date = document.createElement("h5");
-    date.innerHTML = movie["release_date"];
-
-    poster = document.createElement("img");
-    poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
-    poster.classList.add("movie");
-    poster.id = movie["id"];
-
-    //division avec les infos minimales du film
-    movieHTML = document.createElement("div");
-    movieHTML.appendChild(title);
-    movieHTML.appendChild(date);
-    movieHTML.appendChild(poster);
-    list.appendChild(movieHTML);
-
-    //Permet de cliquer sur chacun des films affichés
-    const btnMovies = document.querySelectorAll('.movie');
-    btnMovies.forEach(function(i){
-        i.addEventListener('click', GetInfoMovie);
-        i.style.cursor = "pointer";
-    });
+    keywordsList = body["results"];
+    console.log(keywordsList)
 }
 
 let movies = GetMovie(); //variable qui contient le résultat de la recherche
@@ -63,11 +51,11 @@ async function GetMovie() {
     //Récupération des info du formulaire
     const genre_id = document.querySelector('#management-genres').value;
     const runtime = document.querySelector('#management-time').value;
-    const keywords = document.querySelector('#management-keywords').value;
+    const keyword = document.querySelector('#management-keywords').value;
     const director_id = document.querySelector('#management-director').value;
 
     //test si le formulaire est vide
-    if (runtime == "null" && genre_id == "null" || director_id != "null")
+    if (runtime == "null" && genre_id == "null" && keyword == "" || director_id != "null")
         page = 1;//les plus populaires en ce moment
     else
         page = Math.floor(Math.random() * 20 + 1);//numero de page aléatoire
@@ -82,21 +70,34 @@ async function GetMovie() {
 
     //Gestion si le genre est saisi ou non
     if (genre_id == "null")
-        genre_url = ""
+        genre_url = "";
     else
         genre_url = "&with_genres=" + genre_id;
 
     //Gestion si le genre est saisi ou non
     if (director_id == "null")
-        director_url = ""
+        director_url = "";
     else
         director_url = "&with_crew=" + director_id;
 
- 
-    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+director_url+"&with_keywords="+keywords);
+    //Gestion de la recherche avec des keywords
+    if (keyword == "")
+        keyword_url = "";
+    else
+    {
+        keyword_url = "&with_keywords=";
+        GetKeywordsLike(keyword);
+        keywordsList.forEach(function(id) {
+            keyword_url += id["id"] + ",";
+            console.log("test")
+        });
+        //console.log(keyword_url)
+    }
+    
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+director_url+keyword_url);
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
-    
+
     try {
         console.log('success!', body);
     }
@@ -108,6 +109,48 @@ async function GetMovie() {
     SelectMovie();
 }
 btnManagementOk.addEventListener('click', function(){movies = GetMovie()});
+
+const list = document.querySelector(".listMovie");
+const movie1 = document.querySelector(".movie1");
+//Info générale de la liste de film affichée sur la page principale
+const ShowMovie = (movie) => {
+
+    title = document.createElement("h4");
+    title.innerHTML = movie["title"];
+
+    date = document.createElement("h5");
+    date.innerHTML = movie["release_date"];
+
+
+    poster = document.createElement("img");
+    poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    poster.classList.add("poster-movie");
+    poster.id = movie["id"];
+
+    //division avec les infos minimales du film
+    movieHTML = document.createElement("div");
+    movieHTML.appendChild(title);
+    movieHTML.appendChild(date);
+    movieHTML.appendChild(poster);
+    list.appendChild(movieHTML);
+
+    /*
+    movie1.querySelector(".title").innerHTML = movie["title"];
+    console.log(movie1.querySelector(".title").innerHTML)
+    movie1.querySelector(".date").innerHTML = movie["release_date"];
+    movie1.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    movie1.querySelector(".poster-movie").id = movie["id"];
+*/
+    console.log(movie1)
+
+
+    //Permet de cliquer sur chacun des films affichés
+    const btnMovies = document.querySelectorAll('.poster-movie');
+    btnMovies.forEach(function(i){
+        i.addEventListener('click', GetInfoMovie);
+        i.style.cursor = "pointer";
+    });
+}
 
 const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
@@ -318,7 +361,7 @@ async function GetKeywords(id) {
 //Affiche les keywords du film passé en paramètre
 const ShowKeywords = (keyword) => {
 
-    //liste de genres
+    //liste de keywords
     li = document.createElement("li");//a chaque keyword on ajoute un li
     li.innerHTML = keyword["name"];
     listKeyword.appendChild(li);
