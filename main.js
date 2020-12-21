@@ -1,4 +1,30 @@
-GetGenre();
+GetGenre();//remplir les options de genre du formulaire
+
+//Récuperer les différents genres
+async function GetGenre() {
+    const response = await fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
+    // above line fetches the response from the given API endpoint.
+    const body = await response.json();
+    
+    try {
+        console.log('success!', body);
+    }
+    catch(e) {
+        console.log('some error happened' , e);
+    }
+
+    body["genres"].forEach(genre => AddGenreToManagement(genre)); //Appel de la fonction pour afficher
+}
+
+const management_genre = document.querySelector("#management-genres");
+//Ajout des différents genre dans le formulaire
+const AddGenreToManagement = (genre) => {
+    genreOption = document.createElement("option");
+    genreOption.innerHTML = genre['name'];
+    genreOption.value = genre['id'];
+    management_genre.appendChild(genreOption);
+}
+
 //Info générale de la liste de film affichée sur la page principale
 const list = document.querySelector(".listMovie");
 const ShowMovie = (movie) => {
@@ -44,14 +70,19 @@ async function GetMovie() {
     else if (runtime == 181)
         runtime_url = "&with_runtime.gte=180";
     else
-        runtime_url = "&with_runtime.lte="+runtime;
+        runtime_url = "&with_runtime.lte=" + runtime;
 
+    if (genre_id == "null")
+        genre_url = ""
+    else
+        genre_url = "&with_genres=" + genre_id;
 
-    //numero de page aléatoire
-    page = Math.floor(Math.random() * 50);
+    if (runtime == "null" && genre_id == "null")
+        page = 1;//les plus populaires en ce moment
+    else
+        page = Math.floor(Math.random() * 50);//numero de page aléatoire
 
-
-    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+"&with_genres="+genre_id+runtime_url+"&with_keywords="+keywords);
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+"&with_keywords="+keywords);
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
     
@@ -70,22 +101,24 @@ btnManagementOk.addEventListener('click', function(){movies = GetMovie()});
 const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
 const SelectMovie = () => {
+
     list.innerHTML = null; //Remise à zéro de la liste
-    /*const nbAleatoire = [];
-    while(nbAleatoire.length != 2)
+    let nbAleatoire = []; //Tableau de nombres aléatoires différents
+
+    while(nbAleatoire.length != 3)//Tant qu'il n'y a pas 3 identifiants de films
     {
-        nb = movies[Math.floor(Math.random() * 20)];
-        if (nbAleatoire.indexOf(nb) > -1)
+        nb = Math.floor(Math.random() * 20);//Nombre aléatoire entre 1 et 20
+
+        if (nbAleatoire.indexOf(nb) < 0)//Si l'identifiant ne fait pas déjà partie du tableau
         {
             nbAleatoire.push(nb);
         }
-    }*/
+    }
 
-    ShowMovie(movies[Math.floor(Math.random() * 20)]);
-    ShowMovie(movies[Math.floor(Math.random() * 20)]);
-    ShowMovie(movies[Math.floor(Math.random() * 20)]);
-
-    //nbAleatoire.forEach(nb, ShowMovie(nb));
+    //appel de l'affichage
+    nbAleatoire.forEach(function(i){
+        ShowMovie(movies[i]);
+    });
 }
 btnOtherMovie.addEventListener('click', GetMovie); //genère d'autres films
 
@@ -106,32 +139,6 @@ async function GetInfoMovie (e) {
 
     ShowInfoMovie(body);
 }
-
-//Récuperer les différents genres
-async function GetGenre() {
-    const response = await fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
-    // above line fetches the response from the given API endpoint.
-    const body = await response.json();
-    
-    try {
-        console.log('success!', body);
-    }
-    catch(e) {
-        console.log('some error happened' , e);
-    }
-
-    body["genres"].forEach(genre => AddGenreToManagement(genre)); //Appel de la fonction pour afficher
-}
-
-const management_genre = document.querySelector("#management-genres");
-//Ajout des différents genre dans le formulaire
-const AddGenreToManagement = (genre) => {
-    genreOption = document.createElement("option");
-    genreOption.innerHTML = genre['name'];
-    genreOption.value = genre['id'];
-    management_genre.appendChild(genreOption);
-}
-
 
 const infoHTML = document.querySelector(".info-movie");
 const backdropHTML = document.querySelector(".backdrop");
