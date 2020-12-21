@@ -3,6 +3,38 @@ body {
     color: white;
 }
 
+.home-page {
+    height: 100vh;
+}
+
+.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.show {
+    opacity: 1;
+    pointer-events: initial;
+}
+
+.listMovie {
+    display: flex;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/******Page Info sur le Films******/
+.info-movie {
+    height: 100vh;
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 .headMovie {
     display :flex;
     align-items: baseline;
@@ -15,12 +47,4 @@ body {
 .listActor {
     display: flex;
     overflow-x: scroll;
-}
-
-.listMovie {
-    display: flex;
-}
-
-button {
-    cursor: pointer;
 }

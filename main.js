@@ -149,7 +149,14 @@ async function GetInfoMovie (e) {
     }
 
     ShowInfoMovie(body);
+    document.querySelector(".home-page").classList.add("hide");
+    document.querySelector(".info-movie").classList.remove("hide");
 }
+document.querySelector(".btnBack").addEventListener('click', function(){
+    document.querySelector(".home-page").classList.remove("hide");
+    document.querySelector(".info-movie").classList.add("hide");
+});
+
 
 const infoHTML = document.querySelector(".info-movie");
 const backdropHTML = document.querySelector(".backdrop");
@@ -195,13 +202,13 @@ const ShowInfoMovie = (movie) => {
     vote_average = document.querySelector(".vote_average");
     vote_average.innerHTML = movie["vote_average"]*10 + '%';
 
-    //Companies de Production
+    //Sociétés de Production
     companie = document.querySelector(".companies");
-    companie.innerHTML = null; //évite d'ajouter les companies à une liste de companie déjà présente
+    companie.innerHTML = null; //évite d'ajouter les sociétés à une liste de sociétés déjà présente
     movie["production_companies"].forEach(function(i){
-        li_companie = document.createElement("li");//a chaque companie on ajoute un li
+        li_companie = document.createElement("li");//a chaque société on ajoute un li
         li_companie.innerHTML = i["name"];
-        if (i["logo_path"] != null)
+        if (i["logo_path"] != null)//si il n'y a pas de lien pour le logo on ne demande pas d'afficher
         {
             img_companie = document.createElement("img");
             img_companie.src = "https://image.tmdb.org/t/p/w92" + i["logo_path"];
@@ -230,7 +237,7 @@ const ShowInfoMovie = (movie) => {
     GetKeywords(movie["id"]);
 }
 
-//Récupère la liste des acteurs du film passé en paramètre (+le directeur)
+//Récupère la liste des acteurs du film passé en paramètre (+les réalisateurs)
 async function GetCast(id) {
     const response = await fetch("https://api.themoviedb.org/3/movie/"+ id +"/credits?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
