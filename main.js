@@ -29,10 +29,28 @@ const ShowMovie = (movie) => {
 }
 
 let movies = GetMovie(); //variable qui contient le résultat de la recherche
-const btnOtherMovie = document.querySelector(".btnOtherMovie");
+const btnManagementOk = document.querySelector(".management-ok");
 //Récupération des données de l'API 
 async function GetMovie() {
-    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc");
+
+    //Récupération des info du formulaire
+    const genre_id = document.querySelector('#management-genres').value;
+    const runtime = document.querySelector('#management-time').value;
+    const keywords = document.querySelector('#management-keywords').value;
+
+    if (runtime == null)
+        runtime_url = "";
+    else if (runtime == 181)
+        runtime_url = "&with_runtime.gte=180";
+    else
+        runtime_url = "&with_runtime.lte="+runtime;
+
+
+    //numero de page aléatoire
+    page = Math.floor(Math.random() * 50);
+
+
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+"&with_genres="+genre_id+runtime_url+"&with_keywords="+keywords);
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
     
@@ -46,7 +64,9 @@ async function GetMovie() {
     movies = body["results"];
     SelectMovie();
 }
+btnManagementOk.addEventListener('click', function(){movies = GetMovie()});
 
+const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
 const SelectMovie = () => {
     list.innerHTML = null; //Remise à zéro de la liste
@@ -66,7 +86,7 @@ const SelectMovie = () => {
 
     //nbAleatoire.forEach(nb, ShowMovie(nb));
 }
-btnOtherMovie.addEventListener('click', SelectMovie); //genère d'autres films
+btnOtherMovie.addEventListener('click', GetMovie); //genère d'autres films
 
 
 //Récupère les informations précises après clic sur affiche
@@ -153,7 +173,7 @@ const ShowInfoMovie = (movie) => {
     //background avec la banderole 
     const urlBackdrop = "https://image.tmdb.org/t/p/w1280" + movie["backdrop_path"];
     backdropHTML.style.backgroundImage = `url(${urlBackdrop})`;
-    backdropInsideHTML.style.backgroundImage = "linear-gradient(to right, rgba(35%, 5%, 5%, 1), rgba(30%, 5%, 5%, 0.85))";
+    backdropInsideHTML.style.backgroundImage = "linear-gradient(to top, #560018e0, #000000e0)";
     backdropHTML.style.backgroundRepeat = "no-repeat";
     backdropHTML.style.backgroundSize = "cover";
     backdropHTML.style.backgroundPosition = "top";
@@ -205,3 +225,35 @@ const ShowCast = (cast) => {
     }
 }
 
+/*
+//Récupère la liste des keywords du film passé en paramètre
+async function GetKeywords(id) {
+    const response = await fetch("https://api.themoviedb.org/3/movie/"+ id +"/keywords?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
+    // above line fetches the response from the given API endpoint.
+    const body = await response.json();
+    
+    try {
+        console.log('success!', body);
+    }
+    catch(e) {
+        console.log('some error happened' , e);
+    }
+
+    body["keywords"].forEach(keyword => ShowKeywords(keyword)); //Appel de la fonction pour afficher
+}
+
+//Affiche les keywords du film passé en paramètre
+const ShowKeywords = (keyword) => {
+
+    //liste de genres
+    keywordHTML = document.querySelector(".keywords");
+    genre.innerHTML = null; //évite d'ajouter les keywords à une liste de kayword déjà présente
+    ul = document.createElement("ul"); //contenant de la liste
+    keyword.forEach(function(i){
+        li = document.createElement("li");//a chaque kayword on ajoute un li
+        li.innerHTML = i["name"];
+        ul.appendChild(li);
+    });
+    genre.appendChild(ul);
+}
+*/
