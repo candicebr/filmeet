@@ -137,18 +137,51 @@ const SelectMovie = () => {
 }
 btnOtherMovie.addEventListener('click', GetMovie); //genère d'autres films
 
+let TaglineHover = document.querySelector(".tagline-hover");
+async function GetALittleMoreInfo (id,currentMovieHTML) {
+    const response = await fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
+    // above line fetches the response from the given API endpoint.
+    const body = await response.json();
+    
+    try {
+        console.log('success!', body);
+    }
+    catch(e) {
+        console.log('some error happened' , e);
+    }
+
+    //tagline sur le hover
+    currentMovieHTML.addEventListener('mouseover',function(){
+        if ( body["tagline"] == "")
+            TaglineHover.innerHTML = "...";
+        else
+            TaglineHover.innerHTML = body["tagline"];
+    });
+    //affichage
+    currentMovieHTML.querySelector(".runtime").innerHTML = body["runtime"] + ' min';
+    
+    //liste de genres
+    currentMovieHTML.querySelector(".genres").innerHTML = null; //évite d'ajouter les genres à une liste de genre déjà présente
+    body["genres"].forEach(function(i){
+        li_genre = document.createElement("li");//a chaque genre on ajoute un li
+        li_genre.innerHTML = i["name"];
+        currentMovieHTML.querySelector(".genres").appendChild(li_genre);
+    });
+}
+
 //Info générale de la liste de film affichée sur la page principale
 const ShowMovie = (movie) => {
 
-    currentMovie = document.querySelector("#movie-"+numero);
-    currentMovie.querySelector(".title").innerHTML = movie["title"];
-    currentMovie.querySelector(".date").innerHTML = movie["release_date"];
-    currentMovie.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
-    currentMovie.querySelector(".poster-movie").id = movie["id"];
-    currentMovie.querySelector(".runtime").innerHTML = movie["runtime"] + ' min';
+    currentMovieHTML = document.querySelector("#movie-"+numero);
+    currentMovieHTML.querySelector(".title").innerHTML = movie["title"];
+    currentMovieHTML.querySelector(".date").innerHTML = movie["release_date"];
+    currentMovieHTML.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    currentMovieHTML.querySelector(".btnInfo").id = movie["id"];
     
-    //Permet de cliquer sur chacun des films affichés
-    const btnMovies = document.querySelectorAll('.poster-movie');
+    GetALittleMoreInfo(movie["id"],currentMovieHTML);
+
+    //Permet de cliquer sur chacun des films affichés pour plus d'information
+    const btnMovies = document.querySelectorAll('.btnInfo');
     btnMovies.forEach(function(i){
         i.addEventListener('click', GetInfoMovie);
         i.style.cursor = "pointer";

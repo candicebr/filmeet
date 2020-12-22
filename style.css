@@ -30,6 +30,10 @@ button {
     cursor: pointer;
 }
 
+.tagline-hover {
+    text-align: center;
+}
+
 .cadre {
     padding: 20px;
     display: flex;
@@ -43,6 +47,17 @@ button {
 
 .poster-movie {
     height: 300px;
+    margin-right: 15px;
+}
+
+.genres {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.genres li {
+    margin-right: 8px;
 }
 
 
