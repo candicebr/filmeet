@@ -108,7 +108,22 @@ button {
 }
 
 .sous-titre {
+	font-family: 'Andika New Basic', sans-serif;
+	color: rgba(255, 255, 255, 0.3);
+	font-size: 14px;
+}
 
+.title {
+	font-family: 'Andika New Basic', sans-serif;
+	color: white;
+	font-size: 20px;
+	box-shadow: 0 0 3px 1px #ff0000;
+}
+
+.date, .genres, .runtime {
+	font-family: 'Andika New Basic', sans-serif;
+	color: white;
+	font-size: 16px;
 }
 
 .btnOtherMovie {
