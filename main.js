@@ -37,8 +37,7 @@ const AddGenreToManagement = (genre) => {
 
 }
 
-//let keywordSearch = document.querySelector('#management-keywords').value;
-let keyword_id = [];
+let keyword_id;
 //Récupère les keywords similaires à la recherche
 async function GetKeywordId(string) {
     const response = await fetch("https://api.themoviedb.org/3/search/keyword?api_key=9818ffc42e4d1dce5ea069594a161d22&query="+string+"&page=1");
@@ -52,13 +51,15 @@ async function GetKeywordId(string) {
         console.log('some error happened' , e);
     }
 
+    //si l'un des keywords correspond à la recherche, on récupère l'id
     body["results"].forEach(function(word) {
         if(word["name"] == string)
             keyword_id = word["id"];
     })
 }
 
-let urlList = {page: null,genre: null,director: null, runtime: null, keyword: null};
+let urlList = {page: null,genre: null,director: null, runtime: null, keyword: null}; //Liste des différents champs de recherches
+//Récupère les élements de recherche
 const SearchMovie = () => {
     //Récupération des info du formulaire
     const genre_id = document.querySelector('#management-genres').value;
@@ -70,7 +71,7 @@ const SearchMovie = () => {
     if (runtime == "null" && genre_id == "null" && keywordSearch == "" || director_id != "null")
         urlList["page"] = 1;//les plus populaires en ce moment
     else
-        urlList["page"] = Math.floor(Math.random() * 20 + 1);//numero de page aléatoire
+        urlList["page"] = Math.floor(Math.random() * 10 + 1);//numero de page aléatoire
 
     //Gestion de la durée du film
     if (runtime == "null")
@@ -92,7 +93,6 @@ const SearchMovie = () => {
     else
         urlList["director"] = "&with_crew=" + director_id;
 
-
     //Gestion de la recherche avec un mot-clé
     if (keywordSearch == "")
     {
@@ -108,8 +108,12 @@ const SearchMovie = () => {
     }
 }
 
+//Evenement des boutons
+document.querySelector(".management-ok").addEventListener('click', function(){movies = SearchMovie()}); //recherche
+document.querySelector(".btnOtherMovie").addEventListener('click', function(){movies = SearchMovie()}); //genère d'autres films
+
+let TaglineHover = document.querySelector(".tagline-hover");
 let movies = SearchMovie(); //variable qui contient le résultat de la recherche
-const btnManagementOk = document.querySelector(".management-ok");
 //Récupération des données de l'API 
 async function GetMovie(urlList) {
     
@@ -124,13 +128,20 @@ async function GetMovie(urlList) {
         console.log('some error happened' , e);
     }
 
-    movies = body["results"];
-    SelectMovie();
+    if (body["total_pages"] != 0)
+    {
+        TaglineHover.innerHTML="...";
+        movies = body["results"];
+        SelectMovie();
+    }
+    else
+    {
+        TaglineHover.innerHTML="Sorry we have nothing for you";
+    }
+    
 }
-btnManagementOk.addEventListener('click', function(){movies = SearchMovie()});
 
 let numero = 1; //pour identifier les 3 films de l'accueil
-const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
 const SelectMovie = () => {
 
@@ -154,9 +165,8 @@ const SelectMovie = () => {
         numero++;
     });
 }
-btnOtherMovie.addEventListener('click', function(){movies = SearchMovie()}); //genère d'autres films
 
-let TaglineHover = document.querySelector(".tagline-hover");
+//Recupère quelques info en plus des 3 films (runtime, genre, tagline)
 async function GetALittleMoreInfo (id,currentMovieHTML) {
     const response = await fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
@@ -208,6 +218,10 @@ const ShowMovie = (movie) => {
         i.style.cursor = "pointer";
     });
 }
+
+
+
+/**************************Page du film avec toutes ses informations**************************/
 
 //Récupère les informations précises après clic sur affiche
 async function GetInfoMovie (e) {
