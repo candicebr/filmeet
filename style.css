@@ -4,6 +4,12 @@ body {
     color: white;
 }
 
+.logo-cl {
+	position: absolute;
+	top: 80px; 
+	right: 30px;
+}
+
 .home-page {
 	padding: 30px;
     height: 100vh;
