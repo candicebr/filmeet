@@ -97,6 +97,11 @@ button {
     margin-right: 15px;
 }
 
+.info {
+    position: relative;
+    min-width: 150px;
+}
+
 .genres {
     list-style-type: none;
     display: flex;
@@ -104,13 +109,14 @@ button {
 }
 
 .genres li {
-    margin-right: 8px;
+    margin-right: 9px;
 }
 
 .sous-titre {
 	font-family: 'Andika New Basic', sans-serif;
 	color: rgba(255, 255, 255, 0.3);
-	font-size: 14px;
+    font-size: 14px;
+    margin-bottom: 0;
 }
 
 .title {
@@ -122,7 +128,16 @@ button {
 .date, .genres, .runtime {
 	font-family: 'Andika New Basic', sans-serif;
 	color: white;
-	font-size: 16px;
+    font-size: 15px;
+    margin-top:0;
+}
+
+.btnInfo {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btnOtherMovie {
@@ -155,8 +170,4 @@ button {
 .listActor {
     display: flex;
     overflow-x: scroll;
-}
-
-button {
-    cursor: pointer;
 }
