@@ -20,10 +20,29 @@ body {
 
 .listMovie {
     display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+	align-items: center;
+
 }
 
 button {
     cursor: pointer;
+}
+
+.cadre {
+    padding: 20px;
+    display: flex;
+    width: 480px;
+    height: 300px;
+  	box-shadow: inset 0 0 3px 1px #fff, 
+      inset 0 0 7px 5px #ff0000,
+      0 0 7px 5px #ff0000,
+      0 0 3px 1px #fff;
+}
+
+.poster-movie {
+    height: 300px;
 }
 
 
@@ -41,7 +60,7 @@ button {
     align-items: baseline;
 }
 
-.date {
+.headMovie .date {
     margin-left: 10px;
 }
 
@@ -50,28 +69,6 @@ button {
     overflow-x: scroll;
 }
 
-.listMovie {
-    display: flex;
-}
-
 button {
     cursor: pointer;
-}
-
-/*#cadres-neon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 550px;
-}*/
-
-.cadre {
-	position: absolute;
-  	width: 480px;
-  	box-shadow: 
-  	height: 300px;
-		inset 0 0 3px 1px #fff, 
-		inset 0 0 7px 5px #ff0000,
-		0 0 7px 5px #ff0000;
-		0 0 3px 1px #fff, 
 }

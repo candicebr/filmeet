@@ -110,53 +110,11 @@ async function GetMovie() {
 }
 btnManagementOk.addEventListener('click', function(){movies = GetMovie()});
 
-const list = document.querySelector(".listMovie");
-const movie1 = document.querySelector(".movie1");
-//Info générale de la liste de film affichée sur la page principale
-const ShowMovie = (movie) => {
-
-    title = document.createElement("h4");
-    title.innerHTML = movie["title"];
-
-    date = document.createElement("h5");
-    date.innerHTML = movie["release_date"];
-
-
-    poster = document.createElement("img");
-    poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
-    poster.classList.add("poster-movie");
-    poster.id = movie["id"];
-
-    //division avec les infos minimales du film
-    movieHTML = document.createElement("div");
-    movieHTML.appendChild(title);
-    movieHTML.appendChild(date);
-    movieHTML.appendChild(poster);
-    list.appendChild(movieHTML);
-
-    /*
-    movie1.querySelector(".title").innerHTML = movie["title"];
-    console.log(movie1.querySelector(".title").innerHTML)
-    movie1.querySelector(".date").innerHTML = movie["release_date"];
-    movie1.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
-    movie1.querySelector(".poster-movie").id = movie["id"];
-*/
-    console.log(movie1)
-
-
-    //Permet de cliquer sur chacun des films affichés
-    const btnMovies = document.querySelectorAll('.poster-movie');
-    btnMovies.forEach(function(i){
-        i.addEventListener('click', GetInfoMovie);
-        i.style.cursor = "pointer";
-    });
-}
-
+let numero = 1; //pour identifier les 3 films de l'accueil
 const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
 const SelectMovie = () => {
 
-    list.innerHTML = null; //Remise à zéro de la liste
     let nbAleatoire = []; //Tableau de nombres aléatoires différents
 
     while(nbAleatoire.length != 3)//Tant qu'il n'y a pas 3 identifiants de films
@@ -169,13 +127,33 @@ const SelectMovie = () => {
         }
     }
 
+    numero = 1;//remise à 1 à chaque nouvelle sélection
+
     //appel de l'affichage
     nbAleatoire.forEach(function(i){
         ShowMovie(movies[i]);
+        numero++;
     });
 }
 btnOtherMovie.addEventListener('click', GetMovie); //genère d'autres films
 
+//Info générale de la liste de film affichée sur la page principale
+const ShowMovie = (movie) => {
+
+    currentMovie = document.querySelector("#movie-"+numero);
+    currentMovie.querySelector(".title").innerHTML = movie["title"];
+    currentMovie.querySelector(".date").innerHTML = movie["release_date"];
+    currentMovie.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    currentMovie.querySelector(".poster-movie").id = movie["id"];
+    currentMovie.querySelector(".runtime").innerHTML = movie["runtime"] + ' min';
+    
+    //Permet de cliquer sur chacun des films affichés
+    const btnMovies = document.querySelectorAll('.poster-movie');
+    btnMovies.forEach(function(i){
+        i.addEventListener('click', GetInfoMovie);
+        i.style.cursor = "pointer";
+    });
+}
 
 //Récupère les informations précises après clic sur affiche
 async function GetInfoMovie (e) {
@@ -209,27 +187,27 @@ const listActor = document.querySelector(".listActor");
 const ShowInfoMovie = (movie) => {
 
     //titre
-    title = document.querySelector(".title");
+    title = infoHTML.querySelector(".title");
     title.innerHTML = movie["title"];
 
     //date
-    date = document.querySelector(".date");
+    date = infoHTML.querySelector(".date");
     date.innerHTML = movie["release_date"];
 
     //durée en minutes
-    runtime = document.querySelector(".runtime");
+    runtime = infoHTML.querySelector(".runtime");
     runtime.innerHTML = movie["runtime"] + ' min';
 
     //poster
-    poster = document.querySelector(".poster");
+    poster = infoHTML.querySelector(".poster");
     poster.src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
 
     //phrase d'accroche
-    description = document.querySelector(".tagline");
+    description = infoHTML.querySelector(".tagline");
     description.innerHTML = movie["tagline"];
    
     //liste de genres
-    genre = document.querySelector(".genres");
+    genre = infoHTML.querySelector(".genres");
     genre.innerHTML = null; //évite d'ajouter les genres à une liste de genre déjà présente
     movie["genres"].forEach(function(i){
         li_genre = document.createElement("li");//a chaque genre on ajoute un li
@@ -238,7 +216,7 @@ const ShowInfoMovie = (movie) => {
     });
 
     //description
-    description = document.querySelector(".description");
+    description = infoHTML.querySelector(".description");
     description.innerHTML = movie["overwiew"];
     
     //vote moyenne en pourcentage
