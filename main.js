@@ -136,7 +136,7 @@ async function GetMovie(urlList) {
     }
     else
     {
-        TaglineHover.innerHTML="Sorry we have nothing for you";
+        TaglineHover.innerHTML="You are very picky, unfortunately we have nothing for you";
     }
     
 }
