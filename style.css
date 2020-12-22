@@ -115,9 +115,8 @@ button {
 
 .title {
 	font-family: 'Andika New Basic', sans-serif;
-	color: white;
+	color: rgb(255, 255, 255);
 	font-size: 20px;
-	box-shadow: 0 0 3px 1px #ff0000;
 }
 
 .date, .genres, .runtime {
