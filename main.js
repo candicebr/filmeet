@@ -23,11 +23,23 @@ const AddGenreToManagement = (genre) => {
     genreOption.innerHTML = genre['name'];
     genreOption.value = genre['id'];
     management_genre.appendChild(genreOption);
+
+    /*
+    genreOption = document.createElement("input");
+    genreLabel = document.createElement("label");
+    genreLabel.innerHTML = genre['name'];
+    genreOption.name = genre['name'];
+    genreOption.value = genre['id'];
+    genreOption.type = "checkbox";
+    management_genre.appendChild(genreOption);
+    management_genre.appendChild(genreLabel);
+*/
+
 }
 
-let keywordsList = [];
+let keyword_id;
 //Récupère les keywords similaires à la recherche
-async function GetKeywordsLike(string) {
+async function GetKeywordId(string) {
     const response = await fetch("https://api.themoviedb.org/3/search/keyword?api_key=9818ffc42e4d1dce5ea069594a161d22&query="+string+"&page=1");
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
@@ -39,62 +51,73 @@ async function GetKeywordsLike(string) {
         console.log('some error happened' , e);
     }
 
-    keywordsList = body["results"];
-    console.log(keywordsList)
+    //si l'un des keywords correspond à la recherche, on récupère l'id
+    body["results"].forEach(function(word) {
+        if(word["name"] == string)
+            keyword_id = word["id"];
+    })
 }
 
-let movies = GetMovie(); //variable qui contient le résultat de la recherche
-const btnManagementOk = document.querySelector(".management-ok");
-//Récupération des données de l'API 
-async function GetMovie() {
-
+let urlList = {page: null,genre: null,director: null, runtime: null, keyword: null}; //Liste des différents champs de recherches
+//Récupère les élements de recherche
+const SearchMovie = () => {
     //Récupération des info du formulaire
     const genre_id = document.querySelector('#management-genres').value;
     const runtime = document.querySelector('#management-time').value;
-    const keyword = document.querySelector('#management-keywords').value;
+    const keywordSearch = document.querySelector('#management-keywords').value;
     const director_id = document.querySelector('#management-director').value;
 
     //test si le formulaire est vide
-    if (runtime == "null" && genre_id == "null" && keyword == "" || director_id != "null")
-        page = 1;//les plus populaires en ce moment
+    if (runtime == "null" && genre_id == "null" && keywordSearch == "" || director_id != "null")
+        urlList["page"] = 1;//les plus populaires en ce moment
     else
-        page = Math.floor(Math.random() * 20 + 1);//numero de page aléatoire
+        urlList["page"] = Math.floor(Math.random() * 10 + 1);//numero de page aléatoire
 
     //Gestion de la durée du film
     if (runtime == "null")
-        runtime_url = "";
+        urlList["runtime"] = "";
     else if (runtime == 181)
-        runtime_url = "&with_runtime.gte=180";
+        urlList["runtime"] = "&with_runtime.gte=180";
     else
-        runtime_url = "&with_runtime.lte=" + runtime;
+        urlList["runtime"] = "&with_runtime.lte=" + runtime;
 
     //Gestion si le genre est saisi ou non
     if (genre_id == "null")
-        genre_url = "";
+        urlList["genre"] = "";
     else
-        genre_url = "&with_genres=" + genre_id;
+        urlList["genre"] = "&with_genres=" + genre_id;
 
-    //Gestion si le genre est saisi ou non
+    //Gestion si le realisateur est saisi ou non
     if (director_id == "null")
-        director_url = "";
+        urlList["director"] = "";
     else
-        director_url = "&with_crew=" + director_id;
+        urlList["director"] = "&with_crew=" + director_id;
 
-    //Gestion de la recherche avec des keywords
-    if (keyword == "")
-        keyword_url = "";
+    //Gestion de la recherche avec un mot-clé
+    if (keywordSearch == "")
+    {
+        urlList["keyword"] = "";
+        GetMovie(urlList);
+    }
     else
     {
-        keyword_url = "&with_keywords=";
-        GetKeywordsLike(keyword);
-        keywordsList.forEach(function(id) {
-            keyword_url += id["id"] + ",";
-            console.log("test")
+        GetKeywordId(keywordSearch).then(function(){
+            urlList["keyword"] = "&with_keywords="+keyword_id;
+            GetMovie(urlList);
         });
-        //console.log(keyword_url)
     }
+}
+
+//Evenement des boutons
+document.querySelector(".management-ok").addEventListener('click', function(){movies = SearchMovie()}); //recherche
+document.querySelector(".btnOtherMovie").addEventListener('click', function(){movies = SearchMovie()}); //genère d'autres films
+
+let TaglineHover = document.querySelector(".tagline-hover");
+let movies = SearchMovie(); //variable qui contient le résultat de la recherche
+//Récupération des données de l'API 
+async function GetMovie(urlList) {
     
-    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+page+genre_url+runtime_url+director_url+keyword_url);
+    const response = await fetch("https://api.themoviedb.org/3/discover/movie?api_key=9818ffc42e4d1dce5ea069594a161d22&sort-by=popularity.desc&page="+urlList["page"]+urlList["genre"]+urlList["runtime"]+urlList["director"]+urlList["keyword"]);
     // above line fetches the response from the given API endpoint.
     const body = await response.json();
 
@@ -105,13 +128,20 @@ async function GetMovie() {
         console.log('some error happened' , e);
     }
 
-    movies = body["results"];
-    SelectMovie();
+    if (body["total_pages"] != 0)
+    {
+        TaglineHover.innerHTML="...";
+        movies = body["results"];
+        SelectMovie();
+    }
+    else
+    {
+        TaglineHover.innerHTML="Sorry we have nothing for you";
+    }
+    
 }
-btnManagementOk.addEventListener('click', function(){movies = GetMovie()});
 
 let numero = 1; //pour identifier les 3 films de l'accueil
-const btnOtherMovie = document.querySelector(".btnOtherMovie");
 //Selection de 3 films aléatoire
 const SelectMovie = () => {
 
@@ -135,9 +165,8 @@ const SelectMovie = () => {
         numero++;
     });
 }
-btnOtherMovie.addEventListener('click', GetMovie); //genère d'autres films
 
-let TaglineHover = document.querySelector(".tagline-hover");
+//Recupère quelques info en plus des 3 films (runtime, genre, tagline)
 async function GetALittleMoreInfo (id,currentMovieHTML) {
     const response = await fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
     // above line fetches the response from the given API endpoint.
@@ -157,9 +186,8 @@ async function GetALittleMoreInfo (id,currentMovieHTML) {
         else
             TaglineHover.innerHTML = body["tagline"];
     });
-    //affichage
+
     currentMovieHTML.querySelector(".runtime").innerHTML = body["runtime"] + ' min';
-    
     //liste de genres
     currentMovieHTML.querySelector(".genres").innerHTML = null; //évite d'ajouter les genres à une liste de genre déjà présente
     body["genres"].forEach(function(i){
@@ -175,7 +203,10 @@ const ShowMovie = (movie) => {
     currentMovieHTML = document.querySelector("#movie-"+numero);
     currentMovieHTML.querySelector(".title").innerHTML = movie["title"];
     currentMovieHTML.querySelector(".date").innerHTML = movie["release_date"];
-    currentMovieHTML.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    if(movie["poster_path"] != null)
+        currentMovieHTML.querySelector(".poster-movie").src = "https://image.tmdb.org/t/p/w300" + movie["poster_path"];
+    else
+        currentMovieHTML.querySelector(".poster-movie").src = "icono/poster.png";
     currentMovieHTML.querySelector(".btnInfo").id = movie["id"];
     
     GetALittleMoreInfo(movie["id"],currentMovieHTML);
@@ -187,6 +218,10 @@ const ShowMovie = (movie) => {
         i.style.cursor = "pointer";
     });
 }
+
+
+
+/**************************Page du film avec toutes ses informations**************************/
 
 //Récupère les informations précises après clic sur affiche
 async function GetInfoMovie (e) {
