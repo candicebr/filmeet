@@ -189,6 +189,7 @@ input[type=text]:focus, select:hover, input:hover {
     position: absolute;
     left: 0;
     top: 0;
+    font-family: 'Andika New Basic', sans-serif;
 }
 
 .backdrop-inside {
@@ -202,7 +203,6 @@ input[type=text]:focus, select:hover, input:hover {
 
 .headMovie .title {
     margin-left: 20px;
-    font-family: 'Andika New Basic', sans-serif;
     font-size: 30px;
 }
 
@@ -224,6 +224,16 @@ input[type=text]:focus, select:hover, input:hover {
 
 .headMovie .tagline {
     font-family: 'Dancing Script', cursive;
+}
+
+.infos-movie-text {
+    column-count: 3;
+}
+
+.bodyMovie {
+    display: flex;
+    list-style-type: none;
+    margin-left: 30px;
 }
 
 .listActor {
