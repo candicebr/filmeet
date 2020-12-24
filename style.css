@@ -164,13 +164,40 @@ button {
     top: 0;
 }
 
-.headMovie {
-    display :flex;
-    align-items: baseline;
+.backdrop-inside {
+    padding: 30px;
 }
 
-.headMovie .date {
+.headMovie {
+    display :flex;
+    align-items: center;
+    list-style-type: none;
+}
+
+/*.headMovie .date {
     margin-left: 10px;
+}*/
+
+.headMovie .title {
+    margin-left: 20px;
+    font-family: 'Andika New Basic', sans-serif;
+    font-size: 30px;
+}
+
+.cadre-poster {
+    padding: 25px;
+    display: flex;
+    width: 235px;
+    height: 350px;
+	box-shadow: 
+	  inset 0 0 3px 1px #fff, 
+      inset 0 0 7px 5px #ff0000,
+      0 0 7px 5px #ff0000,
+	  0 0 3px 1px #fff;
+}
+
+.poster {
+    height: 350px;
 }
 
 .listActor {
