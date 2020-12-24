@@ -196,14 +196,9 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .headMovie {
-    display :flex;
-    align-items: center;
-    list-style-type: none;
+    display: flex;
+	list-style-type: none;
 }
-
-/*.headMovie .date {
-    margin-left: 10px;
-}*/
 
 .headMovie .title {
     margin-left: 20px;
@@ -225,6 +220,10 @@ input[type=text]:focus, select:hover, input:hover {
 
 .poster {
     height: 350px;
+}
+
+.headMovie .tagline {
+    font-family: 'Dancing Script', cursive;
 }
 
 .listActor {
