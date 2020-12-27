@@ -285,7 +285,7 @@ const ShowInfoMovie = (movie) => {
 
     //description
     description = infoHTML.querySelector(".description");
-    description.innerHTML = movie["overwiew"];
+    description.innerHTML = movie["overview"];
     
     //vote moyenne en pourcentage
     vote_average = document.querySelector(".vote_average");

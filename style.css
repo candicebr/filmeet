@@ -150,7 +150,7 @@ input[type=text]:focus, select:hover, input:hover {
     margin-top: 0;
 }
 
-.date, .genres, .runtime {
+.info .date, .info .genres, .info .runtime {
 	font-family: 'Andika New Basic', sans-serif;
 	color: white;
     font-size: 15px;
@@ -182,14 +182,33 @@ input[type=text]:focus, select:hover, input:hover {
     padding: 5px 15px;
 }
 
+
+@media (max-width: 768px)
+{   
+    .listMovie {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 768px)
+{
+    .listMovie {
+        flex-direction: row;
+    }
+}
+
 /******Page Info sur le Films******/
 .info-movie {
     height: 100vh;
-    max-width: 100%;
+    width: 100%;
     position: absolute;
     left: 0;
     top: 0;
     font-family: 'Andika New Basic', sans-serif;
+}
+
+.info-movie ul {
+    padding: 0;
 }
 
 .backdrop-inside {
@@ -198,19 +217,26 @@ input[type=text]:focus, select:hover, input:hover {
 
 .headMovie {
     display: flex;
-	list-style-type: none;
+    align-items: baseline;
+    list-style-type: none;
+    margin-bottom: 30px;
 }
 
 .headMovie .title {
     margin-left: 20px;
+    margin-bottom: 0px;
+    margin-right: 20px;
     font-size: 30px;
+}
+
+.headMovie .date {
+    margin: 0;
 }
 
 .cadre-poster {
     padding: 25px;
-    display: flex;
-    width: 235px;
-    height: 350px;
+    /*width: 235px;*/
+    max-height: 350px;
 	box-shadow: 
 	  inset 0 0 3px 1px #fff, 
       inset 0 0 7px 5px #ff0000,
@@ -227,16 +253,63 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .infos-movie-text {
-    column-count: 3;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    /*column-count: 3;*/
+}
+
+.info-movie-text-column {
+    display: flex;
+    justify-content: space-between;
 }
 
 .bodyMovie {
     display: flex;
+    justify-content: space-between;
     list-style-type: none;
-    margin-left: 30px;
 }
 
 .listActor {
     display: flex;
+    align-items: flex-end;
     overflow-x: scroll;
+}
+
+.listActor div {
+    margin: 3px;
+}
+
+.btnBack :hover {
+    cursor: pointer;
+}
+
+.keywords li {
+    background-color: rgba(255, 255, 255, 0.6);
+    list-style: none;
+    border-radius: 10px;
+    font-weight: bold;
+    color:  #560019;
+    text-align: center;
+    padding : 5px;
+    margin-top : 3px;
+    margin-bottom : 3px;
+}
+
+.info-movie h4 {
+    font-family: 'Andika New Basic', sans-serif;
+	color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+h5 {
+    margin-top: 2px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.tagline {
+    font-family: 'Dancing Script', cursive;
+    font-weight: normal;
 }
