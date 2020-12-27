@@ -291,21 +291,6 @@ const ShowInfoMovie = (movie) => {
     vote_average = document.querySelector(".vote_average");
     vote_average.innerHTML = movie["vote_average"]*10 + '%';
 
-    //Sociétés de Production
-    companie = document.querySelector(".companies");
-    companie.innerHTML = null; //évite d'ajouter les sociétés à une liste de sociétés déjà présente
-    movie["production_companies"].forEach(function(i){
-        li_companie = document.createElement("li");//a chaque société on ajoute un li
-        li_companie.innerHTML = i["name"];
-        if (i["logo_path"] != null)//si il n'y a pas de lien pour le logo on ne demande pas d'afficher
-        {
-            img_companie = document.createElement("img");
-            img_companie.src = "https://image.tmdb.org/t/p/w92" + i["logo_path"];
-            li_companie.appendChild(img_companie);
-        }
-        companie.appendChild(li_companie);
-    });
-
     //background avec la banderole 
     const urlBackdrop = "https://image.tmdb.org/t/p/w1280" + movie["backdrop_path"];
     backdropHTML.style.backgroundImage = `url(${urlBackdrop})`;
@@ -375,13 +360,19 @@ const FindDirectors = (crew) => {
     if (crew["job"] == "Director")
     {
         directing = document.createElement("li");
-        directing.innerHTML = crew["job"] + ": " + crew["name"];
+        directing_name = document.createElement("p");
+        directing.innerHTML = crew["job"];
+        directing_name.innerHTML = crew["name"];
+        directing.appendChild(directing_name);
         directors.appendChild(directing);
     }
     if (crew["department"] == "Writing")
     {
         writing = document.createElement("li");
-        writing.innerHTML = crew["job"] + ": " + crew["name"];
+        writing_name = document.createElement("p");
+        writing.innerHTML = crew["job"];
+        writing_name.innerHTML = crew["name"];
+        writing.appendChild(writing_name);
         writers.appendChild(writing);
     }
 }

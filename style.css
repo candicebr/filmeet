@@ -11,7 +11,7 @@ body {
 }
 
 .home-page {
-	padding: 30px;
+	padding: 0 20px 0 20px;
     height: 100vh;
 }
 
@@ -28,7 +28,7 @@ body {
 .listMovie {
     display: flex;
     justify-content: space-around;
-    margin-top: 40px;
+    /*margin-top: 40px;*/
 	align-items: center;
 }
 
@@ -225,7 +225,7 @@ input[type=text]:focus, select:hover, input:hover {
 .headMovie .title {
     margin-left: 20px;
     margin-bottom: 0px;
-    margin-right: 20px;
+    margin-right: 10px;
     font-size: 30px;
 }
 
@@ -235,6 +235,7 @@ input[type=text]:focus, select:hover, input:hover {
 
 .cadre-poster {
     padding: 25px;
+    margin-right: 40px;
     /*width: 235px;*/
     max-height: 350px;
 	box-shadow: 
@@ -248,8 +249,12 @@ input[type=text]:focus, select:hover, input:hover {
     height: 350px;
 }
 
-.headMovie .tagline {
+.infos-movie-text .tagline {
     font-family: 'Dancing Script', cursive;
+}
+
+.infos-movie-text .description {
+    text-align: justify;
 }
 
 .infos-movie-text {
@@ -277,11 +282,33 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .listActor div {
-    margin: 3px;
+    margin: 3px 5px 0 5px;
+}
+
+.listActor div img{
+    max-height: 210px;    
 }
 
 .btnBack :hover {
     cursor: pointer;
+}
+
+.director, .writer {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.director li, .writer li {
+    margin: 0 8px 0 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.director li p, .writer li p {
+    font-weight: lighter;
+    margin-top: 1px;
+    font-size: 15px;
 }
 
 .keywords li {
