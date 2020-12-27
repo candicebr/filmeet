@@ -278,16 +278,29 @@ input[type=text]:focus, select:hover, input:hover {
 .listActor {
     display: flex;
     align-items: flex-end;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .listActor div {
     margin: 3px 5px 0 5px;
+    /*border-left: solid white;
+    box-shadow: inset 1px 0 1em white;*/
+}
+
+.listActor h4, .listActor h5{
+    margin-left: 5px;
 }
 
 .listActor div img{
-    max-height: 210px;    
+    max-height: 210px;
+    opacity: 0.7;
+    transition: 0.3s;
 }
+
+.listActor div img:hover{
+    opacity: 1;
+}
+
 
 .btnBack :hover {
     cursor: pointer;
@@ -300,7 +313,7 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .director li, .writer li {
-    margin: 0 8px 0 8px;
+    margin-right: 15px;
     font-weight: bold;
     font-size: 15px;
 }
@@ -309,6 +322,11 @@ input[type=text]:focus, select:hover, input:hover {
     font-weight: lighter;
     margin-top: 1px;
     font-size: 15px;
+}
+
+.keywords {
+    overflow-y: auto;
+    max-height: 188px;
 }
 
 .keywords li {
@@ -320,6 +338,7 @@ input[type=text]:focus, select:hover, input:hover {
     text-align: center;
     padding : 5px;
     margin-top : 3px;
+    margin-right: 5px;
     margin-bottom : 3px;
 }
 
@@ -339,4 +358,27 @@ h5 {
 .tagline {
     font-family: 'Dancing Script', cursive;
     font-weight: normal;
+}
+
+.progressBar {
+    width : 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+}
+
+.myBar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color:  red;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0 2px 0 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px 4px #ff0000;
+    width: 0;
+    transition: 2s;
 }

@@ -223,6 +223,8 @@ const ShowMovie = (movie) => {
 
 /**************************Page du film avec toutes ses informations**************************/
 
+vote_average = document.querySelector(".myBar");
+
 //Récupère les informations précises après clic sur affiche
 async function GetInfoMovie (e) {
 
@@ -236,7 +238,6 @@ async function GetInfoMovie (e) {
     catch(e) {
         console.log('some error happened' , e);
     }
-
     ShowInfoMovie(body);
     document.querySelector(".home-page").classList.add("hide");
     document.querySelector(".info-movie").classList.remove("hide");
@@ -288,7 +289,8 @@ const ShowInfoMovie = (movie) => {
     description.innerHTML = movie["overview"];
     
     //vote moyenne en pourcentage
-    vote_average = document.querySelector(".vote_average");
+
+    vote_average.style.width = `${movie['vote_average']*10}%`;
     vote_average.innerHTML = movie["vote_average"]*10 + '%';
 
     //background avec la banderole 
