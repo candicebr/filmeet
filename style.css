@@ -21,7 +21,6 @@ body {
 
 .home-page {
 	padding: 0 20px 0 20px;
-    height: 100vh;
 }
 
 .hide {
@@ -37,7 +36,6 @@ body {
 .listMovie {
     display: flex;
     justify-content: space-around;
-    /*margin-top: 40px;*/
 	align-items: center;
 }
 
@@ -255,7 +253,6 @@ input[type=text]:focus, select:hover, input:hover {
     .keywords {
         max-height: 250px;
     }
- 
 }
 
 @media (min-width: 768px)
@@ -410,6 +407,17 @@ input[type=text]:focus, select:hover, input:hover {
     font-size: 15px;
 }
 
+.keywords::-webkit-scrollbar, .listActor::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+}
+
+.keywords::-webkit-scrollbar-thumb, .listActor::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+}
+
 .keywords {
     overflow-y: auto;
 }
@@ -446,7 +454,7 @@ h5 {
 
 .progressBar {
     width : 100%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
     height: 20px;
     display: inline-block;
