@@ -166,6 +166,7 @@ const SelectMovie = () => {
     });
 }
 
+let index = 2;
 //Recupère quelques info en plus des 3 films (runtime, genre, tagline)
 async function GetALittleMoreInfo (id,currentMovieHTML) {
     const response = await fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=9818ffc42e4d1dce5ea069594a161d22&language=en-US");
@@ -185,6 +186,9 @@ async function GetALittleMoreInfo (id,currentMovieHTML) {
             TaglineHover.innerHTML = "...";
         else
             TaglineHover.innerHTML = body["tagline"];
+
+        currentMovieHTML.style.zIndex = index;
+        index++;
     });
 
     currentMovieHTML.querySelector(".runtime").innerHTML = body["runtime"] + ' min';

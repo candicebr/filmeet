@@ -2,6 +2,7 @@ body {
 	background: linear-gradient(to top, #560019, #000000 );
 	background-attachment: fixed;
     color: white;
+    font-family: 'Andika New Basic', sans-serif;
 }
 
 .logos {
@@ -100,16 +101,25 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .management-ok {
-	width: 50px;
-	height: 40px;
-	margin-left: 10px;
+    padding: 6px;
+    margin-left: 10px;
+    font-weight: bold;
+    color:  #ff0000;
+    box-shadow: 
+    inset 0 0 3px 1px #fff, 
+    inset 0 0 4px 2px #ff0000,
+    0 0 4px 2px #ff0000,
+    0 0 3px 1px #fff;
+    background-color: transparent;
+    transition: all 0.3s;
 }
 
 .tagline-hover {
 	text-align: center;
 	font-family: 'Dancing Script', cursive;
 	font-size: 24px;
-	margin-top: 0px;
+    margin-top: 0px;
+    /*animation: slideIn 2s ease 1;*/
 }
 
 .cadre {
@@ -117,9 +127,10 @@ input[type=text]:focus, select:hover, input:hover {
     display: flex;
 	box-shadow: 
 	  inset 0 0 3px 1px #fff, 
-      inset 0 0 7px 5px #ff0000,
-      0 0 7px 5px #ff0000,
-	  0 0 3px 1px #fff;
+      inset 0 0 5px 4px #ff0000,
+      0 0 5px 4px #ff0000,
+      0 0 3px 1px #fff;
+    /*animation: neon 1s ease infinite;*/
 	margin-top: 0px;
 }
 
@@ -144,21 +155,18 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .sous-titre {
-	font-family: 'Andika New Basic', sans-serif;
 	color: rgba(255, 255, 255, 0.3);
     font-size: 14px;
     margin-bottom: 0;
 }
 
 .title {
-	font-family: 'Andika New Basic', sans-serif;
 	color: rgb(255, 255, 255);
     font-size: 20px;
     margin-top: 0;
 }
 
 .info .date, .info .genres, .info .runtime {
-	font-family: 'Andika New Basic', sans-serif;
 	color: white;
     font-size: 15px;
     margin-top:0;
@@ -183,12 +191,30 @@ input[type=text]:focus, select:hover, input:hover {
 
 .btnOtherMovie {
 	display: block;
-    margin-left: auto;
-	margin-right: auto;
-	margin-top: 40px;
+    margin: 30px auto 0 auto;
     padding: 5px 15px;
+    box-shadow: 
+        inset 0 0 3px 1px #fff, 
+        inset 0 0 4px 2px #ff0000,
+        0 0 4px 2px #ff0000,
+        0 0 3px 1px #fff;
+    color: red;
+    font-weight: bold;
+    background-color: transparent;
+    transition: all 0.3s;
 }
 
+.btnOtherMovie:hover, .management-ok:hover {
+    box-shadow: 
+    inset 0 0 3px 1px #fff, 
+    inset 0 0 7px 4px #ff0000,
+    0 0 7px 4px #ff0000,
+    0 0 3px 1px #fff;
+}
+
+.cadre:hover {
+    animation: neon 1s ease infinite;
+}
 
 @media (max-width: 768px)
 {   
@@ -263,7 +289,6 @@ input[type=text]:focus, select:hover, input:hover {
     position: absolute;
     left: 0;
     top: 0;
-    font-family: 'Andika New Basic', sans-serif;
 }
 
 .info-movie ul {
@@ -305,7 +330,8 @@ input[type=text]:focus, select:hover, input:hover {
 	  inset 0 0 3px 1px #fff, 
       inset 0 0 7px 5px #ff0000,
       0 0 7px 5px #ff0000,
-	  0 0 3px 1px #fff;
+      0 0 3px 1px #fff;
+    animation: neon-light 1s ease infinite;
 }
 
 .poster {
@@ -402,7 +428,6 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .info-movie h4 {
-    font-family: 'Andika New Basic', sans-serif;
 	color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
     margin-bottom: 0;
@@ -440,4 +465,64 @@ h5 {
     box-shadow: 0 0 6px 4px #ff0000;
     width: 0;
     transition: 2s;
+}
+
+
+/***Animation***/
+
+@keyframes neon {
+    0%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff,
+            inset 0 0 5px 4px #ff0000,
+            0 0 5px 4px #ff0000, 
+            0 0 3px 1px #fff;
+    }
+    50%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff, 
+            inset 0 0 9px 7px #ff0000,
+            0 0 9px 7px #ff0000,
+            0 0 3px 1px #fff;
+    }
+    100%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff, 
+            inset 0 0 5px 4px #ff0000,
+            0 0 5px 4px #ff0000,
+            0 0 3px 1px #fff;
+    }
+}
+
+@keyframes neon-light {
+    0%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff,
+            inset 0 0 5px 4px #ff0000,
+            0 0 5px 4px #ff0000, 
+            0 0 3px 1px #fff;
+    }
+    50%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff, 
+            inset 0 0 7px 5px #ff0000,
+            0 0 7px 5px #ff0000,
+            0 0 3px 1px #fff;
+    }
+    100%{
+        box-shadow: 
+            inset 0 0 3px 1px #fff, 
+            inset 0 0 5px 4px #ff0000,
+            0 0 5px 4px #ff0000,
+            0 0 3px 1px #fff;
+    }
+}
+
+@keyframes slideIn {
+    from{
+        margin-right: 100%;
+    }
+    to{
+        margin-right: 0;
+    }
 }
