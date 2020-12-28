@@ -192,25 +192,49 @@ input[type=text]:focus, select:hover, input:hover {
 
 @media (max-width: 768px)
 {   
-    .listMovie, .management-form, .bodyMovie {
+    .listMovie, .management-form, .bodyMovie, .headMovie :nth-child(2) {
         flex-direction: column;
         align-items: center;
     }
 
     .cadre {
-        width: 400px;
-        height: 300px; 
+        width: 100%;
+        height: 250px; 
     }
 
     .infos-movie-text {
         width: 100%;
+    }
+
+    .poster-movie {
+        height: 250px;
+    }
+
+    .info .date, .info .genres, .info .runtime {
+        margin-bottom: 4px;
+    }
+
+    .sous-titre {
+        margin-top: 10px;
+    }
+
+    .title {
+        margin-bottom: 0;
+    }
+
+    .cadre-poster {
+        margin-right: 0;
+    }
+
+    .keywords {
+        max-height: 250px;
     }
  
 }
 
 @media (min-width: 768px)
 {
-    .listMovie, .management-form, .bodyMovie {
+    .listMovie, .management-form, .bodyMovie, .headMovie :nth-child(2){
         flex-direction: row;
     }
 
@@ -221,6 +245,14 @@ input[type=text]:focus, select:hover, input:hover {
 
     .infos-movie-text {
         width: 75%;
+    }
+
+    .cadre-poster {
+        margin-right: 40px;
+    }
+
+    .keywords {
+        max-height: 188px;
     }
 }
 
@@ -249,8 +281,13 @@ input[type=text]:focus, select:hover, input:hover {
     margin-bottom: 30px;
 }
 
-.headMovie .title {
+.headMovie :nth-child(2) {
+    display: flex;
+    align-items: baseline;
     margin-left: 20px;
+}
+
+.headMovie .title {
     margin-bottom: 0px;
     margin-right: 10px;
     font-size: 30px;
@@ -262,8 +299,7 @@ input[type=text]:focus, select:hover, input:hover {
 
 .cadre-poster {
     padding: 25px;
-    margin-right: 40px;
-    max-width: 235px;
+    max-width: 240px;
     max-height: 350px;
 	box-shadow: 
 	  inset 0 0 3px 1px #fff, 
@@ -350,7 +386,6 @@ input[type=text]:focus, select:hover, input:hover {
 
 .keywords {
     overflow-y: auto;
-    max-height: 188px;
 }
 
 .keywords li {
