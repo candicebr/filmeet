@@ -363,12 +363,12 @@ input[type=text]:focus, select:hover, input:hover {
     display: flex;
     align-items: flex-end;
     overflow-x: auto;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    scrollbar-width: thin;
 }
 
 .listActor div {
     margin: 3px 5px 0 5px;
-    /*border-left: solid white;
-    box-shadow: inset 1px 0 1em white;*/
 }
 
 .listActor h4, .listActor h5{
@@ -420,6 +420,8 @@ input[type=text]:focus, select:hover, input:hover {
 
 .keywords {
     overflow-y: auto;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    scrollbar-width: thin;
 }
 
 .keywords li {
