@@ -23,18 +23,6 @@ const AddGenreToManagement = (genre) => {
     genreOption.innerHTML = genre['name'];
     genreOption.value = genre['id'];
     management_genre.appendChild(genreOption);
-
-    /*
-    genreOption = document.createElement("input");
-    genreLabel = document.createElement("label");
-    genreLabel.innerHTML = genre['name'];
-    genreOption.name = genre['name'];
-    genreOption.value = genre['id'];
-    genreOption.type = "checkbox";
-    management_genre.appendChild(genreOption);
-    management_genre.appendChild(genreLabel);
-*/
-
 }
 
 let keyword_id;
