@@ -1,14 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@300&display=swap');
+
 body {
 	background: linear-gradient(to top, #560019, #000000 );
 	background-attachment: fixed;
     color: white;
-    font-family: 'Andika New Basic', sans-serif;
+    font-family: sans-serif;
 }
 
 .logos {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .logos :first-child {
@@ -99,8 +101,8 @@ input[type=text]:focus, select:hover, input:hover {
 }
 
 .management-ok {
-    padding: 6px;
-    margin-left: 10px;
+    padding: 8px;
+    margin-left: 20px;
     font-weight: bold;
     color:  #ff0000;
     box-shadow: 
@@ -110,6 +112,7 @@ input[type=text]:focus, select:hover, input:hover {
     0 0 3px 1px #fff;
     background-color: transparent;
     transition: all 0.3s;
+    font-size: 16px;
 }
 
 .tagline-hover {
@@ -190,7 +193,7 @@ input[type=text]:focus, select:hover, input:hover {
 .btnOtherMovie {
 	display: block;
     margin: 30px auto 0 auto;
-    padding: 5px 15px;
+    padding: 8px 17px;
     box-shadow: 
         inset 0 0 3px 1px #fff, 
         inset 0 0 4px 2px #ff0000,
@@ -200,6 +203,7 @@ input[type=text]:focus, select:hover, input:hover {
     font-weight: bold;
     background-color: transparent;
     transition: all 0.3s;
+    font-size: 18px;
 }
 
 .btnOtherMovie:hover, .management-ok:hover {
